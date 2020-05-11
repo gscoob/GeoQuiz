@@ -1,0 +1,36 @@
+.grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 1em;
+}
+
+header, footer {
+  grid-column: 1 / 4;
+}
+
+@media all and (max-width: 700px) {
+  aside,
+  article {
+    grid-column: 1 / 4;
+  }
+}
+
+/* Demo Specific Styles */
+/*
+body {
+  margin: 0 auto;
+  max-width: 56em;
+  padding: 1em 0;
+}
+*/
+
+header,
+aside,
+article,
+footer {
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+}
