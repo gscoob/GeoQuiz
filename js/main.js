@@ -878,15 +878,15 @@
             .getBoundingClientRect()
             .height;
         
-        var mapWidth = d3.select(".map")
-            .node()
-            .getBoundingClientRect()
-            .right;
-        
-        var mapHeight = d3.select(".map")
-            .node()
-            .getBoundingClientRect()
-            .height;
+//        var mapWidth = d3.select(".map")
+//            .node()
+//            .getBoundingClientRect()
+//            .right;
+//        
+//        var mapHeight = d3.select(".map")
+//            .node()
+//            .getBoundingClientRect()
+//            .height;
         
         //use coordinates of mousemove event to set label coordinates
         var x1 = d3.event.clientX + 30,
@@ -895,7 +895,7 @@
             y2 = d3.event.clientY - infoboxHeight - 10;
 
         //horizontal label coordinate, testing for overflow
-        var x = d3.event.clientX > mapWidth - infoboxWidth - 20 ? x2 : x1; 
+        var x = d3.event.clientX > window.innerHeight - infoboxWidth - 20 ? x2 : x1; 
         //vertical label coordinate, testing for overflow
         var y = d3.event.clientY > window.innerHeight - infoboxHeight - 40 ? y2 : y1; 
 
