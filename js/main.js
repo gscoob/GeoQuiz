@@ -351,7 +351,7 @@
 
                     d3.select(".map")
                         .append("svg:image")
-                        .attr("xlink:href", "../img/guess.png")
+                        .attr("xlink:href", "img/guess.png")
                         .attr("class", "guess")
                         .attr("id", "guess_"+st)
                         .attr("x", xy[0])
