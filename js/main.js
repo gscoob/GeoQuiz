@@ -361,7 +361,7 @@
                         
                     d3.select("#guess_"+st)
                         .transition()
-                        .delay(function(){return ((Math.floor(Math.random() * 500)));})
+                        .delay(function(){return ((Math.floor(Math.random() * 1500)));})
                         .duration(350)
                         .style("opacity", 1)
                             .transition()
