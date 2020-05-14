@@ -9,20 +9,13 @@ header, footer {
 }
 
 @media all and (max-width: 700px) {
-  aside,
+  aside {
+    grid-column: 5 / 4;
+  },
   article {
     grid-column: 1 / 4;
   }
 }
-
-/* Demo Specific Styles */
-/*
-body {
-  margin: 0 auto;
-  max-width: 56em;
-  padding: 1em 0;
-}
-*/
 
 header,
 aside,

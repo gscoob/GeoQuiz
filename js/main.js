@@ -438,6 +438,7 @@
     function updateButton(){
 
         if (runOnce) {
+            d3.select(".headtitle").remove()
             d3.select(".selector").style("visibility", "hidden").style("opacity", 0)
             d3.select(".map")
                 .transition()
