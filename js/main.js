@@ -159,7 +159,7 @@
         var rule2 = '<span id="rul">2. Click on a State to Choose Your Answer</span><br><br>A banner will appear across the top of the page revealing the correct answer. Click anywhere on the banner to remove it.'
         var rule3 = '<span id="rul">3. Click the Green Button to Select the Next Question</span><br><br>Once you have seen all the questions the game will end. To play again, simply click the Game Over banner.'
         
-        d3.select(".rule")
+        d3.selectAll(".rule")
             .append("div")
             .attr("class", "rulebox")            
     
