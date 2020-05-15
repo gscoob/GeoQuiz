@@ -13,14 +13,6 @@ header, footer {
   article {
     grid-column: 1 / 4;
   }
-    
-    .sidebar-left {
-        visibility: hidden;
-    }
-    
-    .sidebar-bottom {
-        visibility: visible;
-    }
 }
 
 header,

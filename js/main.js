@@ -159,7 +159,7 @@
         var rule2 = '<span id="rul">2. Click on a State to Choose Your Answer</span><br><br>A banner will appear across the top of the page revealing the correct answer. Click anywhere on the banner to remove it.'
         var rule3 = '<span id="rul">3. Click the Green Button to Select the Next Question</span><br><br>Once you have seen all the questions the game will end. To play again, simply click the Game Over banner.'
         
-        d3.selectAll(".rule")
+        d3.select(".rule")
             .append("div")
             .attr("class", "rulebox")            
     
@@ -801,16 +801,78 @@
 
     //function to create dynamic label
     function setInfoSelect(props){
+
+        var infoR = d3.select(".states."+props.geo_id)
+            .node()
+            .getBoundingClientRect()
+            .right;
         
+        var infoL = d3.select(".states."+props.geo_id)
+            .node()
+            .getBoundingClientRect()
+            .left;
+        
+        var infoB = d3.select(".states."+props.geo_id)
+            .node()
+            .getBoundingClientRect()
+            .bottom;
+
+        var infoW = d3.select(".states."+props.geo_id)
+            .node()
+            .getBoundingClientRect()
+            .width;
+        
+        var infoH = d3.select(".states."+props.geo_id)
+            .node()
+            .getBoundingClientRect()
+            .height;  
+        
+        if (infoL > 720){
+            var posS = "right"
+            var posX = infoR + infoW
+        } else {
+            var posS = "left"
+            var posX = infoR
+        }
+        
+//        switch(props.geo_abbrv) {
+//            case "TX":
+//                infoY = infoY - (infoH / 3);
+//                break;
+//            case "FL":
+//                var infoX = d3.select(".states."+props.geo_id)
+//                    .node()
+//                    .getBoundingClientRect()
+//                    .left;                
+//                infoX = infoX + (infoW / 2);
+//                infoY = infoY - (infoH / 2);
+//                break;
+//            case "ME":
+//                infoY = infoY - (infoH / 3);
+//                break;
+//            case "KY":
+//                infoX = infoX - (infoW / 5);                
+//                break;
+//            case "TN":
+//                infoX = infoX - (infoW / 5);                
+//                break;
+//        }
+        console.log(props.geo_name)
+        console.log(infoL)
+        console.log(infoR)
+        console.log(infoW)
+        console.log(posX)
         var stateName = "Click to Select " + props.geo_name.toUpperCase() + " as the Answer"
         var infoAttribute1 = "Population: " + comma(props.geo_pop) 
         var infoAttribute2 = "Land Area: " + comma(Math.floor(props.geo_acres/640)) + " sq miles"
         
         //create info label div
-        var infolabel = d3.select("body")
+        var infolabel = d3.select(".hoover")
             .append("div")
             .attr("class", "infolabel")
-            .attr("id", props.geo_id + "_label");
+            .attr("id", props.geo_id + "_label")
+            .style(posS, posX + "px")
+            .style("top", infoB + "px");
         
         infolabel.append("div")
             .attr("class", "infohead")
@@ -850,11 +912,23 @@
         var infoAttribute1 = questionData[idxLoad].raw_prefix + " " + showRaw + " " + questionData[idxLoad].raw_suffix
         var infoAttribute2 = questionData[idxLoad].norm_prefix + " " + showNorm + " " + questionData[idxLoad].norm_suffix
         
+        var infoX = d3.select(".states."+props.geo_id)
+            .node()
+            .getBoundingClientRect()
+            .right;
+        
+        var infoY = d3.select(".states."+props.geo_id)
+            .node()
+            .getBoundingClientRect()
+            .bottom;
+        
         //create info label div
-        var infolabel = d3.select("body")
+        var infolabel = d3.select(".hoover")
             .append("div")
             .attr("class", "infolabel")
-            .attr("id", props.geo_id + "_label");
+            .attr("id", props.geo_id + "_label")
+            .style("left", infoX + "px")
+            .style("top", infoY + "px");
         
         infolabel.append("div")
             .attr("class", "infohead")
@@ -890,8 +964,8 @@
 //            .height;
         
         //use coordinates of mousemove event to set label coordinates
-        var x1 = d3.event.clientX + 30,
-            y1 = d3.event.clientY + 20,
+        var x1 = d3.event.clientX, // + 30,
+            y1 = d3.event.clientY, // + 20,
             x2 = d3.event.clientX - infoboxWidth - 10,
             y2 = d3.event.clientY - infoboxHeight - 10;
 
@@ -901,8 +975,8 @@
         var y = d3.event.clientY > window.innerHeight - infoboxHeight - 40 ? y2 : y1; 
 
         d3.select(".infolabel")
-            .style("left", x + "px")
-            .style("top", y + "px");
+            .style("left", x1 + "px")
+            .style("top", y1 + "px");
     };
 
     
@@ -945,17 +1019,17 @@
     function setEventListeners(m,c,f){
         if(m){
             d3.selectAll(".states")
-                .on("mouseover", function(d){
+                .on("mouseenter", function(d){
                     highlight(d.properties);
                 })
-                .on("mouseout", function(d){
+                .on("mouseleave", function(d){
                     dehighlight(d.properties);
                 })
-                .on("mousemove", moveInfobox);
+                .on("mousemove", null);
         } else {
             d3.selectAll(".states")
-                .on("mouseover", null)
-                .on("mouseout", null)
+                .on("mouseenter", null)
+                .on("mouseleave", null)
                 .on("mousemove", null);
         }
         

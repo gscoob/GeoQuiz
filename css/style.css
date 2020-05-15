@@ -13,7 +13,7 @@ body {
 .background-image {
 	background-position: center center;
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: 100% 100%;
  	position: absolute;
 	width: 100%;
     height: 100%;
@@ -72,6 +72,7 @@ header {
   font-family: 'Patrick Hand SC';
     visibility: visible;
     opacity: 1;
+    z-index: 99;
 }
 
 .selector:hover {
@@ -91,6 +92,8 @@ header {
     background-color: #eee;
     border: solid thick #666;
     z-index: 100;
+    max-height: 575px;
+    overflow-y: scroll;
 }
 
 .rulehead {
@@ -120,6 +123,7 @@ header {
     background-color: #eee;
     border: solid thick #666;
     z-index: 100;
+    max-height: 575px;
 }
 
 .scorehead {
