@@ -3,7 +3,7 @@
 
 html {
 	cursor: url(../img/cursor_wh.ico), context-menu;
-/*    overflow: hidden;*/
+    overflow-x: hidden;
 }
 
 body {
@@ -72,7 +72,6 @@ header {
   font-family: 'Patrick Hand SC';
     visibility: visible;
     opacity: 1;
-    z-index: 99;
 }
 
 .selector:hover {
@@ -85,8 +84,14 @@ header {
   transform: translateY(4px);
 }
 
+#nextQ{
+    font-family: 'Annie Use Your Telescope';
+    font-size: 0.75em;
+}
+
 .rulebox {
     margin-left: 10px;
+    padding-bottom: 20px;
     font-family: 'Ruda';
     color: #222;
     background-color: #eee;
@@ -118,6 +123,7 @@ header {
 
 .scorebox {
     margin-right: 10px;
+    padding-bottom: 20px;
     font-family: 'Ruda';
     color: #222;
     background-color: #eee;
@@ -279,9 +285,17 @@ header {
     top: -15px;
 }
 
+.instruct {
+    position: absolute;
+    left:auto;
+    top: 10px;
+    font-size: 0.75em;
+}
+
 .gameoverbox {
     cursor: pointer;
     position: absolute;
+    top: 150px;
     height: auto;
     width: 100%;
     margin-top: 10px;

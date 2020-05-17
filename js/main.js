@@ -60,7 +60,8 @@
     var questionData;
     var answerData;
     var colorClasses;
-    var runOnce = false;
+    var runIntro = true;
+    var runTutorial = true;    
     
     var comma = d3.format(",");
 
@@ -75,7 +76,6 @@
     function setPage(){
         
         gameStatus = "Loading"
-        runOnce = true;
 
         buildHeader()
         buildRuleBox()
@@ -185,6 +185,8 @@
     
     function buildScoreBox(){
     
+        d3.selectAll(".scorebox").remove();
+        
         var scorH = "Game Progress"
         var scor1 = '<span id="sco">Remaining</span>'
         var scor2 = '<span id="sco">Answered</span>'
@@ -315,6 +317,92 @@
     };
 
     
+    function animateIntro(){
+                    
+        gameStatus = "Waiting"
+        
+        d3.select(".selector").style("visibility", "hidden").style("opacity", 0)
+        d3.select(".map")
+            .transition()
+            .duration(1500)
+            .ease(d3.easeCircleOut)
+            .style("opacity", 1)
+            .style("visibility", "visible")
+
+        d3.select(".map").style("pointer-events", "none")
+        var ratW = 14
+        var ratH = 24
+        var ratA = ratW/ratH
+
+        function animateGuess(callback) {
+            setTimeout(function(){
+
+                var newW = Math.floor(Math.random() * 60)
+                if (newW < 14) {ratW = 14} else {ratW = newW}
+                ratH = Math.floor(ratW/ratA)
+
+                var statexy = centroids[Math.floor(Math.random() * centroids.length)];
+                var st = statexy[0,0]
+                var xy = statexy[0,1]
+
+                d3.select(".map")
+                    .append("svg:image")
+                    .attr("xlink:href", "img/guess.png")
+                    .attr("class", "guess")
+                    .attr("id", "guess_"+st)
+                    .attr("x", xy[0])
+                    .attr("y", xy[1])
+                    .attr("width", ratW)
+                    .attr("height", ratH);
+
+                d3.select("#guess_"+st)
+                    .transition()
+                    .delay(function(){return ((Math.floor(Math.random() * 1500)));})
+                    .duration(350)
+                    .style("opacity", 1)
+                        .transition()
+                        .delay(1000)
+                        .duration(250)
+                        .style("opacity", 0)
+
+                callback(null);
+            },100);
+        }
+
+        var q = d3.queue(3);
+
+        for (var j = 0; j < 60; ++j) {
+          q.defer(animateGuess);
+        }
+
+        q.awaitAll(function(error) {
+            if (error) throw error;
+            setTimeout(function(){
+                d3.select(".map").style("pointer-events", "auto")
+                d3.select(".selector")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)
+                    .style("visibility", "visible")
+                d3.select(".rule")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)
+                    .style("visibility", "visible")
+                d3.select(".score")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)
+                    .style("visibility", "visible")    
+            }, 2000);
+        })
+        
+        runIntro = false;
+    }
+        
     
     function resetStates(){
         
@@ -330,83 +418,11 @@
         d3.selectAll(".states")
             .style("fill", "#ddd")
             .style("stroke", "#000")
-            .style("stroke-width", "0.25px");
+            .style("stroke-width", "0.25px")
 
-        if (runOnce) {
-            d3.select(".map").style("pointer-events", "none")
-            var ratW = 14
-            var ratH = 24
-            var ratA = ratW/ratH
-
-            function animateGuess(callback) {
-                setTimeout(function(){
-
-                    var newW = Math.floor(Math.random() * 60)
-                    if (newW < 14) {ratW = 14} else {ratW = newW}
-                    ratH = Math.floor(ratW/ratA)
-
-                    var statexy = centroids[Math.floor(Math.random() * centroids.length)];
-                    var st = statexy[0,0]
-                    var xy = statexy[0,1]
-
-                    d3.select(".map")
-                        .append("svg:image")
-                        .attr("xlink:href", "img/guess.png")
-                        .attr("class", "guess")
-                        .attr("id", "guess_"+st)
-                        .attr("x", xy[0])
-                        .attr("y", xy[1])
-                        .attr("width", ratW)
-                        .attr("height", ratH);
-                        
-                    d3.select("#guess_"+st)
-                        .transition()
-                        .delay(function(){return ((Math.floor(Math.random() * 1500)));})
-                        .duration(350)
-                        .style("opacity", 1)
-                            .transition()
-                            .delay(1000)
-                            .duration(250)
-                            .style("opacity", 0)
-
-                    callback(null);
-                },100);
-            }
-
-            var q = d3.queue(3);
-
-            for (var j = 0; j < 60; ++j) {
-              q.defer(animateGuess);
-            }
-
-            q.awaitAll(function(error) {
-                if (error) throw error;
-                setTimeout(function(){
-                    d3.select(".map").style("pointer-events", "auto")
-                    d3.select(".selector")
-                        .transition()
-                        .duration(1500)
-                        .ease(d3.easeCircleOut)
-                        .style("opacity", 1)
-                        .style("visibility", "visible")
-                    d3.select(".rule")
-                        .transition()
-                        .duration(1500)
-                        .ease(d3.easeCircleOut)
-                        .style("opacity", 1)
-                        .style("visibility", "visible")
-                    d3.select(".score")
-                        .transition()
-                        .duration(1500)
-                        .ease(d3.easeCircleOut)
-                        .style("opacity", 1)
-                        .style("visibility", "visible")    
-                }, 2000);
- //               d3.select(".map").style("pointer-events", "auto")
-            })
-        }
-        gameStatus = "Playing"
-        runOnce = false;
+        if (runIntro) {animateIntro()}
+        
+        gameStatus = "Playing"     
     };
     
     
@@ -436,18 +452,6 @@
     };
     
     function updateButton(){
-
-        if (runOnce) {
-            d3.select(".headtitle").remove()
-            d3.select(".selector").style("visibility", "hidden").style("opacity", 0)
-            d3.select(".map")
-                .transition()
-                .duration(1500)
-                .ease(d3.easeCircleOut)
-                .style("opacity", 1)
-                .style("visibility", "visible")
-            gameStatus = "Waiting"
-        }
         
         resetStates()
         shuffle(remainQsArray)
@@ -469,7 +473,8 @@
             d3.select(".selector")
                 .text("Which state " + questionText + "?")
                 .style("font-family", "Patrick Hand")
-            setEventListeners(true,true,false)             
+            setEventListeners(true,true,false) 
+            loadAnswers()
         }  
         
         d3.select("#scorR").html(scorR)
@@ -516,31 +521,34 @@
         selectedStateName = props.geo_name;
         selectedStateID = props.geo_id;
         
+        correctStateID = answerData[0]["geo_id"]
+        correctStateName = answerData[0]["geo_name"]
+
+        if (selectedStateID == correctStateID) {playerResults = 0} else {playerResults = 1} 
+        
+        runAnimation(xy) 
+        
+        setTimeout(showResults, 7000, props);
+    };
+    
+    
+    function loadAnswers(){
+        console.log("load answers")
         for (var i=0; i<questionData.length; i++){
+            console.log(i)
             if (questionData[i]["question"] == questionText){
+                console.log(questionData[i])
                 questionID = questionData[i]["q_id"]
                 answerState = questionData[i]["answer_state"]
                 answerText = questionData[i]["answer_text"]
+                console.log(answerState)
             }
         };
 
         expressed = questionID+"norm";
         displayed = questionID+"raw";
 
-        loadAnswers()
-        runAnimation(xy) 
-        
-        setTimeout(showResults, 7000, props);
-    };
-    
-    function loadAnswers(){
-
-        answerData.sort(function(a, b){return d3.descending(parseFloat(a[expressed]), parseFloat(b[expressed]));});
-
-        correctStateID = answerData[0]["geo_id"]
-        correctStateName = answerData[0]["geo_name"]
-
-        if (selectedStateID == correctStateID) {playerResults = 0} else {playerResults = 1}        
+        answerData.sort(function(a, b){return d3.descending(parseFloat(a[expressed]), parseFloat(b[expressed]));})
     }
     
     
@@ -638,6 +646,7 @@
             .attr("class", "resultsbox")
             .style("background-color", reactColor)
             .on("click", function(){
+                    if(runTutorial){d3.select(".selector").html('Which state ' + questionText + '? &emsp; <span id="nextQ">(Click for next question)</span>')}
                     this.remove();
                 })
             .html(playerAttribute)
@@ -651,6 +660,14 @@
             .append("div")
             .attr("class", "resultsgoo")
             .html(infoAttribute2);
+        
+        if(runTutorial){
+            d3.select(".resultsbox")
+                .append("div")
+                .attr("class", "instruct")
+                .style("left", window.innerWidth - 250+"px")
+                .text("Click Banner to Keep Playing");
+        }
         
         d3.select(".resultsbox")
             .transition()
@@ -671,6 +688,8 @@
         
         scorSi = ((scorCi / scorAi) * 100).toFixed(0)+"%"
         d3.select("#scorS").html(scorSi)
+        
+        if(scorAi>4){runTutorial=false;}
     }
     
     
@@ -693,6 +712,7 @@
                     resetStates()
                     setEventListeners(true,true,false)
                     d3.select(".selector").style("pointer-events", "auto")
+                    buildScoreBox()
                     this.remove();
                 })
             .html(playerAttribute)
@@ -799,9 +819,8 @@
     };
         
 
-    //function to create dynamic label
-    function setInfoSelect(props){
-
+    function setBoxPos(props){
+        
         var infoR = d3.select(".states."+props.geo_id)
             .node()
             .getBoundingClientRect()
@@ -829,42 +848,70 @@
         
         if (infoL > 720){
             var posS = "right"
-            var posX = infoR + infoW
+            var posX = window.innerWidth - infoL
         } else {
             var posS = "left"
             var posX = infoR
         }
         
-//        switch(props.geo_abbrv) {
-//            case "TX":
-//                infoY = infoY - (infoH / 3);
-//                break;
-//            case "FL":
-//                var infoX = d3.select(".states."+props.geo_id)
-//                    .node()
-//                    .getBoundingClientRect()
-//                    .left;                
-//                infoX = infoX + (infoW / 2);
-//                infoY = infoY - (infoH / 2);
-//                break;
-//            case "ME":
-//                infoY = infoY - (infoH / 3);
-//                break;
-//            case "KY":
-//                infoX = infoX - (infoW / 5);                
-//                break;
-//            case "TN":
-//                infoX = infoX - (infoW / 5);                
-//                break;
-//        }
-        console.log(props.geo_name)
-        console.log(infoL)
-        console.log(infoR)
-        console.log(infoW)
-        console.log(posX)
-        var stateName = "Click to Select " + props.geo_name.toUpperCase() + " as the Answer"
+        var posY = infoB
+        
+        switch(props.geo_abbrv) {
+            case "TX":
+                posY = posY - (infoH / 3);
+                break;
+            case "MI":
+                posX = posX - (infoW / 3);
+                posY = posY - (infoH / 3);
+                break;
+            case "FL":
+                posX = posX - (infoW / 2);
+                posY = posY - (infoH / 2);
+                break;
+            case "NV":
+                posX = posX - (infoW / 5);
+                break;
+            case "WI":
+                posX = posX - (infoW / 5);
+                posY = posY - (infoH / 3);
+                break;
+            case "IL":
+                posX = posX - (infoW / 5);
+                posY = posY - (infoH / 3);
+                break;
+            case "SC":
+                posX = posX - (infoW / 4);
+                posY = posY - (infoH / 4);
+                break;
+            case "MD":
+                posX = posX - (infoW / 4);                
+                break;
+            case "RI":
+                posX = posX + (infoW);
+                posY = posY + (infoH * 1.25);
+                break;
+        }
+        
+        return [posX, posY, posS];
+    };
+    
+    
+    //function to create dynamic label
+    function setInfoSelect(props){
+        
+        if(runTutorial){
+            var stateName = "Click to Select " + props.geo_name.toUpperCase() + " as the Answer"            
+        }else{
+            var stateName = "Is it " + props.geo_name.toUpperCase() + " ?"            
+        }
+
         var infoAttribute1 = "Population: " + comma(props.geo_pop) 
         var infoAttribute2 = "Land Area: " + comma(Math.floor(props.geo_acres/640)) + " sq miles"
+
+        var posArr = setBoxPos(props);
+        var posX = posArr[0];
+        var posY = posArr[1];
+        var posS = posArr[2];
         
         //create info label div
         var infolabel = d3.select(".hoover")
@@ -872,7 +919,7 @@
             .attr("class", "infolabel")
             .attr("id", props.geo_id + "_label")
             .style(posS, posX + "px")
-            .style("top", infoB + "px");
+            .style("top", posY + "px");
         
         infolabel.append("div")
             .attr("class", "infohead")
@@ -912,23 +959,18 @@
         var infoAttribute1 = questionData[idxLoad].raw_prefix + " " + showRaw + " " + questionData[idxLoad].raw_suffix
         var infoAttribute2 = questionData[idxLoad].norm_prefix + " " + showNorm + " " + questionData[idxLoad].norm_suffix
         
-        var infoX = d3.select(".states."+props.geo_id)
-            .node()
-            .getBoundingClientRect()
-            .right;
-        
-        var infoY = d3.select(".states."+props.geo_id)
-            .node()
-            .getBoundingClientRect()
-            .bottom;
+        var posArr = setBoxPos(props);
+        var posX = posArr[0];
+        var posY = posArr[1];
+        var posS = posArr[2];
         
         //create info label div
         var infolabel = d3.select(".hoover")
             .append("div")
             .attr("class", "infolabel")
             .attr("id", props.geo_id + "_label")
-            .style("left", infoX + "px")
-            .style("top", infoY + "px");
+            .style(posS, posX + "px")
+            .style("top", posY + "px");
         
         infolabel.append("div")
             .attr("class", "infohead")
@@ -939,45 +981,46 @@
         infolabel.append("div")
             .attr("class", "infogoo")
             .html(infoAttribute2);
+    
     };   
 
-    function moveInfobox(){
-        //get width of label
-        var infoboxWidth = d3.select(".infolabel")
-            .node()
-            .getBoundingClientRect()
-            .width;
-        
-        var infoboxHeight = d3.select(".infolabel")
-            .node()
-            .getBoundingClientRect()
-            .height;
-        
-//        var mapWidth = d3.select(".map")
+//    function moveInfobox(){
+//        //get width of label
+//        var infoboxWidth = d3.select(".infolabel")
 //            .node()
 //            .getBoundingClientRect()
-//            .right;
+//            .width;
 //        
-//        var mapHeight = d3.select(".map")
+//        var infoboxHeight = d3.select(".infolabel")
 //            .node()
 //            .getBoundingClientRect()
 //            .height;
-        
-        //use coordinates of mousemove event to set label coordinates
-        var x1 = d3.event.clientX, // + 30,
-            y1 = d3.event.clientY, // + 20,
-            x2 = d3.event.clientX - infoboxWidth - 10,
-            y2 = d3.event.clientY - infoboxHeight - 10;
-
-        //horizontal label coordinate, testing for overflow
-        var x = d3.event.clientX > window.innerHeight - infoboxWidth - 20 ? x2 : x1; 
-        //vertical label coordinate, testing for overflow
-        var y = d3.event.clientY > window.innerHeight - infoboxHeight - 40 ? y2 : y1; 
-
-        d3.select(".infolabel")
-            .style("left", x1 + "px")
-            .style("top", y1 + "px");
-    };
+//        
+////        var mapWidth = d3.select(".map")
+////            .node()
+////            .getBoundingClientRect()
+////            .right;
+////        
+////        var mapHeight = d3.select(".map")
+////            .node()
+////            .getBoundingClientRect()
+////            .height;
+//        
+//        //use coordinates of mousemove event to set label coordinates
+//        var x1 = d3.event.clientX, // + 30,
+//            y1 = d3.event.clientY, // + 20,
+//            x2 = d3.event.clientX - infoboxWidth - 10,
+//            y2 = d3.event.clientY - infoboxHeight - 10;
+//
+//        //horizontal label coordinate, testing for overflow
+//        var x = d3.event.clientX > window.innerHeight - infoboxWidth - 20 ? x2 : x1; 
+//        //vertical label coordinate, testing for overflow
+//        var y = d3.event.clientY > window.innerHeight - infoboxHeight - 40 ? y2 : y1; 
+//
+//        d3.select(".infolabel")
+//            .style("left", x1 + "px")
+//            .style("top", y1 + "px");
+//    };
 
     
     var shuffle = function (array) {
