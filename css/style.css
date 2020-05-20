@@ -242,7 +242,7 @@ header {
 .resultsbox {
     cursor: pointer;
     position: absolute;
-    max-height: 145px;
+    height: auto;
     width: 100%;
     margin-top: 5px;
     background-color: none;
@@ -264,11 +264,6 @@ header {
 .resultsgoo {
     visibility: inherit;
     opacity: inherit;
-/*
-}
-
-.resultsgoo h2 {
-*/
     margin: 0;
     padding: 0;
     display: block;
@@ -283,7 +278,6 @@ header {
     top: -20px;
     margin: 0;
     padding: 0;
-/*    margin-bottom: 5px;*/
 }
 
 #res2 {
@@ -292,7 +286,7 @@ header {
     font-size: 0.75em;
     font-family: 'Patrick Hand';
     position: relative;
-    top: -15px;
+    top: -25px;
 }
 
 .instruct {
