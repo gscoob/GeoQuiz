@@ -48,11 +48,6 @@
         answerText = "NULL",
         answerState = "NULL";
     
-    var mapWidth = window.innerWidth * 0.65,
-        boxWidth = window.innerWidth * 0.10;
-
-    var mapHeight = window.innerHeight * 0.75;
-    
     var playerResults, gameStatus, scorAi, scorCi, scorSi;
     var radius = 10;
     var centroids, areas, remainQsArray;
@@ -84,14 +79,15 @@
         var map = d3.select(".flex")
             .append("svg")
             .attr("class", "map")
-            .attr("width", mapWidth)
-            .attr("height", mapHeight);
+            .attr("width", 958.1)
+            .attr("height", 595.5);
         
-        var scaleW = (mapWidth/958.1)
-        var scaleH = (mapHeight/595.5)
+        var scaleW = ((window.innerWidth*0.65)/958.1)
+        var scaleH = ((window.innerHeight*0.75)/595.5)
         scaleW.toPrecision(2)
         scaleH.toPrecision(2)
         
+                    d3.select(".map").attr("transform", "scale("+scaleW+","+scaleH+")")
 //        console.log("win inH", window.innerHeight)
 //        console.log("win inW", window.innerWidth)
 //        console.log("map H", mapHeight)
@@ -148,8 +144,6 @@
             drawStates(mState, map, path);
             
             buildScoreBox();
-            
-            d3.select(".map").attr("transform", "scale("+scaleW+","+scaleH+")")
         };
     }; //end of setMap()
 
@@ -996,44 +990,6 @@
             .html(infoAttribute2);
     
     };   
-
-//    function moveInfobox(){
-//        //get width of label
-//        var infoboxWidth = d3.select(".infolabel")
-//            .node()
-//            .getBoundingClientRect()
-//            .width;
-//        
-//        var infoboxHeight = d3.select(".infolabel")
-//            .node()
-//            .getBoundingClientRect()
-//            .height;
-//        
-////        var mapWidth = d3.select(".map")
-////            .node()
-////            .getBoundingClientRect()
-////            .right;
-////        
-////        var mapHeight = d3.select(".map")
-////            .node()
-////            .getBoundingClientRect()
-////            .height;
-//        
-//        //use coordinates of mousemove event to set label coordinates
-//        var x1 = d3.event.clientX, // + 30,
-//            y1 = d3.event.clientY, // + 20,
-//            x2 = d3.event.clientX - infoboxWidth - 10,
-//            y2 = d3.event.clientY - infoboxHeight - 10;
-//
-//        //horizontal label coordinate, testing for overflow
-//        var x = d3.event.clientX > window.innerHeight - infoboxWidth - 20 ? x2 : x1; 
-//        //vertical label coordinate, testing for overflow
-//        var y = d3.event.clientY > window.innerHeight - infoboxHeight - 40 ? y2 : y1; 
-//
-//        d3.select(".infolabel")
-//            .style("left", x1 + "px")
-//            .style("top", y1 + "px");
-//    };
 
     
     var shuffle = function (array) {
