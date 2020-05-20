@@ -8,6 +8,7 @@ html {
 
 body {
     margin: 0;
+    padding: 0;
 }
 
 .background-image {
@@ -39,14 +40,14 @@ header {
 }
 
 #title {
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 5px;
+    padding: 5px;
     font-size: 2.2em;
     font-weight: bold;
 }
 
 .controls {
-  margin: 15px 0px 10px 0px;
+  margin: 5px 0px 5px 0px;
     display: flex;
   justify-content: center;
   align-items: center;
@@ -55,8 +56,9 @@ header {
 }
 
 .selector {
+    margin-top: 5px;
   display: inline-block;
-  padding: 10px 15px;
+  padding: 5px 10px;
   font-size: 24px;
   font-weight: bold;
   font-stretch: expanded;
@@ -90,7 +92,7 @@ header {
 }
 
 .rulebox {
-    margin-left: 10px;
+    margin-left: 5px;
     padding-bottom: 20px;
     font-family: 'Ruda';
     color: #222;
@@ -102,7 +104,7 @@ header {
 }
 
 .rulehead {
-    margin: 20px 10px 10px 10px;
+    margin: 10px 10px 10px 10px;
     text-align: center;
     font-size: 1.9em;
     font-weight: bolder;
@@ -110,7 +112,7 @@ header {
 
 .rulegoo {
     font-family: 'Comfortaa';
-    margin: 30px 10px 0px 10px;
+    margin: 15px 10px 0px 10px;
     text-align: center;
     font-size: 1em;
     font-weight: bold;
@@ -122,7 +124,7 @@ header {
 }
 
 .scorebox {
-    margin-right: 10px;
+    margin-right: 5px;
     padding-bottom: 20px;
     font-family: 'Ruda';
     color: #222;
@@ -133,7 +135,7 @@ header {
 }
 
 .scorehead {
-    margin: 20px 10px 10px 10px;
+    margin: 10px 10px 10px 10px;
     text-align: center;
     font-size: 1.9em;
     font-weight: bolder;
@@ -141,7 +143,7 @@ header {
 
 .scoregoo {
     font-family: 'Comfortaa';
-    margin: 30px 10px 0px 10px;
+    margin: 15px 10px 0px 10px;
     text-align: center;
     font-size: 1.2em;
     font-weight: bold;
@@ -169,7 +171,7 @@ header {
 
 .map {
     border: thick solid #666;
-    margin: 10px 0 0 0;
+    margin-top: 15px;
     overflow: hidden;
     visibility: hidden;
     opacity: 0;
@@ -240,9 +242,9 @@ header {
 .resultsbox {
     cursor: pointer;
     position: absolute;
-    height: auto;
+    max-height: 145px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 5px;
     background-color: none;
     color: white;
     border: thick solid #999;
@@ -253,7 +255,8 @@ header {
 }
 
 .resultsbox h2 {
-    margin: 0px 0px 0px 30px;
+    margin: 0;
+    padding-left: 15px;
     display: block;
     text-align: left;
 }
@@ -261,10 +264,13 @@ header {
 .resultsgoo {
     visibility: inherit;
     opacity: inherit;
+/*
 }
 
 .resultsgoo h2 {
-    margin: 0px 0px 0px 0px;
+*/
+    margin: 0;
+    padding: 0;
     display: block;
     text-align: center;
     font-family: 'Patrick Hand SC';
@@ -274,11 +280,15 @@ header {
 
 #res {
     position: relative;
-    top: -20px;
-    margin-bottom: 10px;
+/*    top: -20px;*/
+    margin: 0;
+    padding: 0;
+/*    margin-bottom: 5px;*/
 }
 
 #res2 {
+    margin: 0;
+    padding: 0;
     font-size: 0.75em;
     font-family: 'Patrick Hand';
     position: relative;

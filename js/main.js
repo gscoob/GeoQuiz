@@ -533,15 +533,15 @@
     
     
     function loadAnswers(){
-        console.log("load answers")
+
         for (var i=0; i<questionData.length; i++){
-            console.log(i)
+
             if (questionData[i]["question"] == questionText){
-                console.log(questionData[i])
+
                 questionID = questionData[i]["q_id"]
                 answerState = questionData[i]["answer_state"]
                 answerText = questionData[i]["answer_text"]
-                console.log(answerState)
+
             }
         };
 
@@ -629,15 +629,15 @@
     
     
     function showResults(props){
-        
+
         reactText = reactArray[playerResults][(Math.floor(Math.random() * 5))]
         if (playerResults == 0) {var reactColor = "#00c73f"} else {var reactColor = "#c70000"}
         var infoDesc1 = correctStateName + " " + questionText + "!";
         var infoDesc2 = answerText;
         
         //label content
-        var infoAttribute1 = '<h2 id="res">' + infoDesc1 + '</h2>';
-        var infoAttribute2 = '<h2 id="res2">' + infoDesc2 + '</h2>';
+        var infoAttribute1 = '<span id="res">' + infoDesc1 + '</span>';
+        var infoAttribute2 = '<span id="res2">' + infoDesc2 + '</span>';
         var playerAttribute = '<h2>' + reactText + '</h2>';
         
         //create info label div
@@ -710,7 +710,7 @@
             .on("click", function(){
                     createButtons(questionData)
                     resetStates()
-                    setEventListeners(true,true,false)
+                    setEventListeners(false,false,false)
                     d3.select(".selector").style("pointer-events", "auto")
                     buildScoreBox()
                     this.remove();
