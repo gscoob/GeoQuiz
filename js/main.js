@@ -87,8 +87,10 @@
             .attr("width", mapWidth)
             .attr("height", mapHeight);
         
-        var scaleW = Math.round((mapWidth/958.1), 3)
-        var scaleH = Math.round((mapHeight/595.5), 3)
+        var scaleW = (mapWidth/958.1)
+        var scaleH = (mapHeight/595.5)
+        scaleW.toFixed(3)
+        scaleH.toFixed(3)
         
 //        console.log("win inH", window.innerHeight)
 //        console.log("win inW", window.innerWidth)
