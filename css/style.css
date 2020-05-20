@@ -271,6 +271,7 @@ header {
     font-family: 'Patrick Hand SC';
     font-size: 1em;
     text-decoration: none;
+    height: 0.9em;
 }
 
 #res {
@@ -286,7 +287,7 @@ header {
     font-size: 0.75em;
     font-family: 'Patrick Hand';
     position: relative;
-    top: -25px;
+    top: -20px;
 }
 
 .instruct {
