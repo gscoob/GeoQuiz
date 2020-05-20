@@ -87,6 +87,16 @@
             .attr("width", mapWidth)
             .attr("height", mapHeight);
         
+        var scaleW = Math.round((mapWidth/958.1), 3)
+        var scaleH = Math.round((mapHeight/595.5), 3)
+        
+//        console.log("win inH", window.innerHeight)
+//        console.log("win inW", window.innerWidth)
+//        console.log("map H", mapHeight)
+//        console.log("map W", mapWidth)
+//        console.log("map %H", mapHeight/window.innerHeight)
+//        console.log("map %W", mapWidth/window.innerWidth)
+        
         //create Albers equal area conic projection centered on us
         var projection = d3.geoAlbers()
               .parallels([32, 45])
@@ -137,6 +147,7 @@
             
             buildScoreBox();
             
+            d3.select(".map").attr("transform", "scale("+scaleW+","+scaleH+")")
         };
     }; //end of setMap()
 
