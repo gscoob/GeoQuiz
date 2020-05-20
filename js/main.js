@@ -89,8 +89,8 @@
         
         var scaleW = (mapWidth/958.1)
         var scaleH = (mapHeight/595.5)
-        scaleW.toFixed(3)
-        scaleH.toFixed(3)
+        scaleW.toPrecision(2)
+        scaleH.toPrecision(2)
         
 //        console.log("win inH", window.innerHeight)
 //        console.log("win inW", window.innerWidth)
