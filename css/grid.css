@@ -1,5 +1,4 @@
 .grid {
-    width:auto;
   display: grid;
   grid-template-columns: auto auto auto;
   grid-gap: 1em;
@@ -25,4 +24,5 @@ footer {
   align-items: center;
   justify-content: center;
   height: auto;
+    width: auto;
 }

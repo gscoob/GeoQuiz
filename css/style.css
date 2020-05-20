@@ -106,6 +106,10 @@ header {
     overflow-y: scroll;
 }
 
+.rulebox::-webkit-scrollbar {
+  display: none;
+}
+
 .rulehead {
     margin: 10px 10px 10px 10px;
     text-align: center;
@@ -135,6 +139,10 @@ header {
     border: solid thick #666;
     max-height: 575px;
         overflow-y: scroll;
+}
+
+.scorebox::-webkit-scrollbar {
+  display: none;
 }
 
 .scorehead {
@@ -178,6 +186,7 @@ header {
     overflow: hidden;
     visibility: hidden;
     opacity: 0;
+        align-self: start;
 }
 
 
@@ -255,7 +264,7 @@ header {
     font-size: 2em;
     visibility: hidden;  
     opacity: 0;
-        overflow-x: scroll;
+        overflow-y: scroll;
 }
 
 .resultsbox::-webkit-scrollbar {
