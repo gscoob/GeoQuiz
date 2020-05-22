@@ -86,14 +86,14 @@
         var scaleH = ((window.innerHeight*0.75)/595.5)
         scaleW.toPrecision(2)
         scaleH.toPrecision(2)
+                
+        d3.select(".map").attr("transform", "scale("+scaleW+","+scaleH+")")
         
-                    d3.select(".map").attr("transform", "scale("+scaleW+","+scaleH+")")
-//        console.log("win inH", window.innerHeight)
-//        console.log("win inW", window.innerWidth)
-//        console.log("map H", mapHeight)
-//        console.log("map W", mapWidth)
-//        console.log("map %H", mapHeight/window.innerHeight)
-//        console.log("map %W", mapWidth/window.innerWidth)
+        var mapTop = d3.select(".map").node().getBoundingClientRect().top
+        var flexTop = d3.select(".flex").node().getBoundingClientRect().top
+        var shiftMap = (flexTop - mapTop)
+
+        d3.select(".map").attr("transform", "scale("+scaleW+","+scaleH+") translate(0,"+shiftMap+")")
         
         //create Albers equal area conic projection centered on us
         var projection = d3.geoAlbers()
@@ -164,7 +164,7 @@
         var ruleH = "How To Play"
         var rule1 = '<span id="rul">1. Click on the Green Button to Select a Question</span>'
         var rule2 = '<span id="rul">2. Click on a State to Choose Your Answer</span><br><br>A banner will appear across the top of the page revealing the correct answer. Click anywhere on the banner to remove it.'
-        var rule3 = '<span id="rul">3. Click the Green Button to Select the Next Question</span><br><br>Once you have seen all the questions the game will end. To play again, simply click the Game Over banner.'
+        var rule3 = '<span id="rul">3. Click the Green Button Again to Select the Next Question</span><br><br>Once you have seen all the questions the game will end. To play again, simply click the Game Over banner.'
         
         d3.select(".rule")
             .append("div")
@@ -648,7 +648,7 @@
         var playerAttribute = '<h2>' + reactText + '</h2>';
         
         //create info label div
-        var bannerResults = d3.select(".grid")
+        var bannerResults = d3.select("header")
             .append("div")
             .attr("class", "resultsbox")
             .style("background-color", reactColor)

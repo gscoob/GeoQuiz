@@ -25,17 +25,12 @@ body {
 	opacity: 0.4;
 }
 
-header {
-    display: inline-block;
-}
-
 .headtitle {
     display: block;
     text-align: center;
     font-family: 'Ruda';
     background-color: #eee;
     opacity: 0.9;
-    width: 100%;
     z-index: -1;
 }
 
@@ -45,7 +40,6 @@ header {
     font-size: 2.2em;
     font-weight: bold;
         text-align: center;
-    width: 100%;
     justify-content: center;
 }
 
@@ -77,7 +71,7 @@ header {
   font-family: 'Patrick Hand SC';
     visibility: visible;
     opacity: 1;
-        justify-content: center;
+/*        justify-content: center;*/
 }
 
 .selector:hover {
@@ -95,14 +89,26 @@ header {
     font-size: 0.75em;
 }
 
+
+.sidebar-left {
+    justify-self: left;
+    width: 94%;
+    padding-left: 3%;
+}
+
+.sidebar-right {
+    justify-self: right;
+    width: 94%;
+    padding-right: 3%;
+}
+
 .rulebox {
-    margin-left: 5px;
-    padding-bottom: 20px;
+    padding-bottom: 1em;
     font-family: 'Ruda';
     color: #222;
     background-color: #eee;
     border: solid thick #666;
-    max-height: 575px;
+    max-height: 580px;
     overflow-y: scroll;
 }
 
@@ -111,7 +117,7 @@ header {
 }
 
 .rulehead {
-    margin: 10px 10px 10px 10px;
+    margin: 0.5em;
     text-align: center;
     font-size: 1.9em;
     font-weight: bolder;
@@ -119,7 +125,7 @@ header {
 
 .rulegoo {
     font-family: 'Comfortaa';
-    margin: 15px 10px 0px 10px;
+    padding: 0.75em;
     text-align: center;
     font-size: 1em;
     font-weight: bold;
@@ -128,16 +134,17 @@ header {
 
 #rul {
     font-size: 1.2em;
+    padding: 0.75em;
 }
 
 .scorebox {
-    margin-right: 5px;
-    padding-bottom: 20px;
+/*    margin-right: 15px;*/
+    padding-bottom: 1em;
     font-family: 'Ruda';
     color: #222;
     background-color: #eee;
     border: solid thick #666;
-    max-height: 575px;
+    max-height: 580px;
         overflow-y: scroll;
 }
 
@@ -146,7 +153,7 @@ header {
 }
 
 .scorehead {
-    margin: 10px 10px 10px 10px;
+    padding: 0.5em;
     text-align: center;
     font-size: 1.9em;
     font-weight: bolder;
@@ -154,7 +161,7 @@ header {
 
 .scoregoo {
     font-family: 'Comfortaa';
-    margin: 15px 10px 0px 10px;
+    padding: 0.25em;
     text-align: center;
     font-size: 1.2em;
     font-weight: bold;
@@ -163,7 +170,7 @@ header {
 
 .scorenbr {
     font-family: 'Ruda';
-    margin: 10px 5px 0px 5px;
+    padding: 0.25em;
     text-align: center;
     font-size: 3em;
     font-weight: bold;
@@ -172,6 +179,7 @@ header {
 
 #sco {
     font-size: 1.2em;
+    padding: 0.25em;
 }
 
 .rule,
@@ -183,10 +191,10 @@ header {
 .map {
     border: thick solid #666;
     margin: 0;
+    padding: 0;
     overflow: hidden;
     visibility: hidden;
     opacity: 0;
-        align-self: start;
 }
 
 
@@ -243,10 +251,6 @@ header {
     font-weight: bold;
 }
 
-#inf {
-    font: italic 90% Verdana, sans-serif;
-}
-
 .alert {
     display: none;
 }
@@ -265,6 +269,8 @@ header {
     visibility: hidden;  
     opacity: 0;
         overflow-y: scroll;
+    top: 0;
+    
 }
 
 .resultsbox::-webkit-scrollbar {
