@@ -1,28 +1,24 @@
 .grid {
-  display: grid;
-  grid-template-columns: 17% 66% 17%   /*  repeat(auto-fit, minmax(100px, 1fr));  */
-/*  grid-gap: 1em;*/
+    display: grid;
+    grid-template-columns: 17% 66% 17%
 }
 
-/*header, footer {
-  grid-column: 1 / 4;
-}*/
 
 @media all and (max-width: 1000px) {
-  aside,
-  article {
-    grid-column: 1 / 4;
-  }
+    aside,
+    article {
+        grid-column: 1 / 4;
+    }
 }
 
-/*header,*/
+
 aside,
 article,
 footer {
-  background: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
     margin-top: 3%;
 }

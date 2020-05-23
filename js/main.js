@@ -162,9 +162,8 @@
     function buildRuleBox(){
     
         var ruleH = "How To Play"
-        var rule1 = '<span id="rul">1. Click on the Green Button to Select a Question</span>'
-        var rule2 = '<span id="rul">2. Click on a State to Choose Your Answer</span><br><br>A banner will appear across the top of the page revealing the correct answer. Click anywhere on the banner to remove it.'
-        var rule3 = '<span id="rul">3. Click the Green Button Again to Select the Next Question</span><br><br>Once you have seen all the questions the game will end. To play again, simply click the Game Over banner.'
+        
+        var rules = '<ol><li id="rul">Click on the Green Button to Scroll Through the Questions</li><li id="rul">Click on a State to Choose It as Your Answer</li><li id="rul">Click on the Red or Green "Results" Banner to Remove It.</li><li id="rul">Click on the Blue "Game Over" Banner to Start the Game Again!</li></ol>'
         
         d3.select(".rule")
             .append("div")
@@ -177,17 +176,8 @@
         d3.select(".rulebox")
             .append("div")
             .attr("class", "rulegoo")
-            .html(rule1);
-        d3.select(".rulebox")
-            .append("div")
-            .attr("class", "rulegoo")
-            .html(rule2);  
-        d3.select(".rulebox")
-            .append("div")
-            .attr("class", "rulegoo")
-            .html(rule3); 
+            .html(rules);
     }
-    
     
     
     function buildScoreBox(){
@@ -244,23 +234,24 @@
             .html(scorS);
     }
     
+    
     function drawGraticule(map, path){
         
         var graticule = d3.geoGraticule()
-            .step([5, 5]); //place graticule lines every 5 degrees of longitude and latitude
+            .step([5, 5]); 
 
         //create graticule background
         var gratBackground = map.append("path")
-            .datum(graticule.outline()) //bind graticule background
-            .attr("class", "gratBackground") //assign class for styling
-            .attr("d", path) //project graticule
+            .datum(graticule.outline()) 
+            .attr("class", "gratBackground") 
+            .attr("d", path) 
 
-        var gratLines = map.selectAll(".gratLines") //select graticule elements that will be created
-            .data(graticule.lines()) //bind graticule lines to each element to be created
-            .enter() //create an element for each datum
-            .append("path") //append each element to the svg as a path element
-            .attr("class", "gratLines") //assign class for styling
-            .attr("d", path); //project graticule lines
+        var gratLines = map.selectAll(".gratLines") 
+            .data(graticule.lines()) 
+            .enter() 
+            .append("path") 
+            .attr("class", "gratLines") 
+            .attr("d", path); 
     };
 
     
@@ -268,26 +259,26 @@
         
         //loop through csv to assign each set of csv attribute values to geojson region
         for (var i=0; i<csvData.length; i++){
-            var csvState = csvData[i]; //the current region
-            var csvKey = csvState.geo_name; //the CSV primary key
+            var csvState = csvData[i]; 
+            var csvKey = csvState.geo_name; 
 
             //loop through geojson regions to find correct region
             for (var a=0; a<mState.length; a++){
 
-                var geojsonProps = mState[a].properties; //the current region geojson properties
-                var geojsonKey = geojsonProps.geo_name; //the geojson primary key
-
+                var geojsonProps = mState[a].properties; 
+                var geojsonKey = geojsonProps.geo_name; 
+                
                 //where primary keys match, transfer csv data to geojson properties object
                 if (geojsonKey == csvKey){
 
                     //assign all attributes and values
                     answerArray.forEach(function(attr){
                         if (isNaN(csvState[attr])) {
-                          var val = csvState[attr];
+                            var val = csvState[attr];
                         } else {
-                          var val = parseFloat(csvState[attr]);
+                            var val = parseFloat(csvState[attr]);
                         } 
-                        geojsonProps[attr] = val; //assign attribute and value to geojson properties
+                        geojsonProps[attr] = val; 
                     });
                 }
             }
@@ -458,6 +449,7 @@
         
     };
     
+    
     function updateButton(){
         
         resetStates()
@@ -535,7 +527,7 @@
         
         runAnimation(xy) 
         
-        setTimeout(showResults, 7000, props);
+        setTimeout(showResults, 4000, props);
     };
     
     
@@ -767,7 +759,6 @@
     };
     
 
-
     //function to test for data value and return color
     function choropleth(props, colorScale){
         //make sure attribute value is a number
@@ -947,17 +938,26 @@
         var idxRank = answerData.findIndex(function (i) {return i.geo_id === props.geo_id})+1
         var ordRank = idxRank + nth(idxRank)
        
-        var showRaw = comma(Math.round(props[displayed]))
+        var showRaw = comma(Math.round((props[displayed] + Number.EPSILON) * 100) / 100)
         
         switch(questionID) {
             case "q06":
-                var showNorm = comma(Math.round(props.geo_pop/props.q06raw))
+                var showNorm = comma(Math.round(((props.geo_pop/props.q06raw) + Number.EPSILON) * 100) / 100)
+                break;
+            case "q16":
+                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                if (props[displayed] == 0) {
+                    showRaw = "very few"
+                    showNorm = "a neglible"
+                } else {
+                    showRaw = showRaw + " million"
+                }             
                 break;
             case "q17":
-                var showNorm = comma(Math.round(props.geo_pop/props.q17raw))
+                var showNorm = comma(Math.round(((props.geo_pop/props.q17raw) + Number.EPSILON) * 100) / 100)
                 break;
             default:
-                var showNorm = comma(Math.round(props[expressed],1))
+                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
         }
 
         var idxLoad = questionData.findIndex(function (i) {return i.q_id === questionID})
@@ -991,29 +991,7 @@
     
     };   
 
-    
-    var shuffle = function (array) {
-
-        var currentIndex = array.length;
-        var temporaryValue, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-        return array;
-
-    };
-    
-    
+        
     function warnSelect() {
 
         $('#mess').text("Use the button above to select a question, then click on the state that you think is the correct answer!")
@@ -1061,6 +1039,7 @@
         }  
     }
 
+    
     function shiftCentroid(st,mp){
         switch(st) {
             case "CA":
@@ -1099,6 +1078,7 @@
         }
     }
     
+    
     function spinStar(xy){
         d3.select("#star")
             .transition()
@@ -1109,5 +1089,29 @@
             .duration(300)
             .attr("transform", "translate("+xy[0]+","+xy[1]+")scale(1)rotate(-120)");
     }
-        
+
+    
+
+    
+    var shuffle = function (array) {
+
+        var currentIndex = array.length;
+        var temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+
+    };
+    
 })(); //last line of main.js
