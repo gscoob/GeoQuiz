@@ -57,6 +57,7 @@
     var colorClasses;
     var runIntro = true;
     var runTutorial = true;    
+    var animate = true;
     
     var comma = d3.format(",");
 
@@ -150,12 +151,18 @@
     
     
     //function to create dynamic label
-    function buildHeader(){
-                          
+    function buildHeader() {            
         var headTitle = d3.select(".headtitle")
             .append("div")
             .attr("id", "title")
             .text('The "Lower 48" Geo Quiz');
+        
+        d3.select("#aniYN")
+            .on("click", function(){
+            console.log(animate)
+                animate = !animate;
+            console.log(animate)
+            });
     };
         
     
@@ -308,7 +315,7 @@
             .attr("d", path)
             .style("fill", "#ddd")
 
-        setEventListeners(true, true, true);
+        setEventListeners(true, true, false);
         
         var desc = states.append("desc")
             .text('{"stroke": "#000", "stroke-width": "0.25px"}');
@@ -491,7 +498,7 @@
         
         for(var i = 0; i < centroids.length; i++) {
            if(centroids[i][0] == props.geo_id) {
-               var mp = centroids[i][1];
+               var mp = centroids[i][1].slice();
            }
         }
         
@@ -515,7 +522,6 @@
             .style("fill", "black")
             .style("stroke", "black")
             .style("stroke-width", "1")
-            .on("mouseover", function(d){spinStar(xy)})
         
         selectedStateName = props.geo_name;
         selectedStateID = props.geo_id;
@@ -525,9 +531,16 @@
 
         if (selectedStateID == correctStateID) {playerResults = 0} else {playerResults = 1} 
         
-        runAnimation(xy) 
+        if (animate) {
+            runAnimation(xy) 
+            setTimeout(showResults, 4000, props)
+        } else {
+            var colorScale = quantileColorScale(answerData)
+            colorStates(colorScale, 100)
+            showResults(props)
+        }
         
-        setTimeout(showResults, 4000, props);
+        setEventListeners(true,false,false)
     };
     
     
@@ -593,38 +606,45 @@
         }
 
         q.awaitAll(function(error) {
-          if (error) throw error;
-            d3.selectAll(".states")
-                .transition()
-                .delay(1000)
-                .duration(1000)
-                .style("fill", function(d){
-                    return choropleth(d.properties, colorScale)
-                });
-
-            d3.select("."+correctStateID)
-                .transition()
-                .delay(2000)
-                .duration(1000)
-                .style("fill", "green")
-                .style("stroke", "gold")
-                .style("stroke-width", "3")
-            if(selectedStateID == correctStateID){
-                d3.select("#star")
-                    .transition()
-                    .delay(2500)
-                    .duration(500)
-                    .style("fill", "gold")
-            } else {
-                d3.select("#star")
-                    .transition()
-                    .delay(2500)
-                    .duration(500)
-                    .style("fill", "red")
-                    .style("opacity", 0.5)
-            }        
+            if (error) throw error;
+            colorStates(colorScale, 1000);
         });
     };
+    
+    
+    function colorStates(colorScale, td){
+        
+        
+        d3.selectAll(".states")
+            .transition()
+            .delay(td)
+            .duration(td)
+            .style("fill", function(d){
+                return choropleth(d.properties, colorScale)
+            });
+
+        d3.select("."+correctStateID)
+            .transition()
+            .delay(td*2)
+            .duration(td)
+            .style("fill", "green")
+            .style("stroke", "gold")
+            .style("stroke-width", "3")
+        if(selectedStateID == correctStateID){
+            d3.select("#star")
+                .transition()
+                .delay(td*2.5)
+                .duration(td*0.5)
+                .style("fill", "gold")
+        } else {
+            d3.select("#star")
+                .transition()
+                .delay(td*2.5)
+                .duration(td*0.5)
+                .style("fill", "red")
+                .style("opacity", 0.5)
+        }         
+    }
     
     
     function showResults(props){
@@ -646,6 +666,7 @@
             .style("background-color", reactColor)
             .on("click", function(){
                     if(runTutorial){d3.select(".selector").html('Which state ' + questionText + '? &emsp; <span id="nextQ">(Click for next question)</span>')}
+                    setEventListeners(true,false,true)    
                     this.remove();
                 })
             .html(playerAttribute)
@@ -676,7 +697,7 @@
                 .style("opacity", 1)
     
         gameStatus = "Finished"
-        setEventListeners(true,false,false)
+
         d3.select(".selector").style("pointer-events", "auto")
         
         if (playerResults == 0) {
@@ -956,6 +977,17 @@
             case "q17":
                 var showNorm = comma(Math.round(((props.geo_pop/props.q17raw) + Number.EPSILON) * 100) / 100)
                 break;
+            case "q20":
+            case "q21":
+            case "q22":
+                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                if (props[displayed] == 0) {
+                    showRaw = "no"
+                    showNorm = "- of course - 0"
+                } else {
+                    showRaw = showRaw + " acres of"
+                }             
+                break;                
             default:
                 var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
         }
@@ -1006,7 +1038,7 @@
     }
     
         
-    function setEventListeners(m,c,f){
+    function setEventListeners(m,c,s){
         if(m){
             d3.selectAll(".states")
                 .on("mouseenter", function(d){
@@ -1037,6 +1069,15 @@
             d3.selectAll(".states")
                 .on("click", null)
         }  
+        
+        if (s) {
+            var trans = d3.select("#star").attr("transform")
+            d3.selectAll("#star")
+                .on("mouseover", function(d){spinStar(trans)})
+        } else {
+            d3.selectAll("#star")
+                .on("mouseover", null)            
+        }
     }
 
     
@@ -1079,15 +1120,16 @@
     }
     
     
-    function spinStar(xy){
+    function spinStar(trans){
         d3.select("#star")
             .transition()
             .duration(300)
-            .attr("transform", "translate("+xy[0]+","+xy[1]+")scale(2.5)rotate(120)")
+            .attr("transform", trans+"scale(2.5)rotate(120)")
             .transition()
             .delay(310)
             .duration(300)
-            .attr("transform", "translate("+xy[0]+","+xy[1]+")scale(1)rotate(-120)");
+            .attr("transform", trans+"scale(1)rotate(-120)");
+//            .attr("transform", "translate("+xy[0]+","+xy[1]+")scale(1)rotate(-120)");        
     }
 
     
