@@ -159,9 +159,7 @@
         
         d3.select("#aniYN")
             .on("click", function(){
-            console.log(animate)
                 animate = !animate;
-            console.log(animate)
             });
     };
         
@@ -401,7 +399,12 @@
                     .duration(1500)
                     .ease(d3.easeCircleOut)
                     .style("opacity", 1)
-                    .style("visibility", "visible")    
+                    .style("visibility", "visible")
+                d3.select(".switchlabel")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)                
             }, 2000);
         })
         

@@ -29,12 +29,12 @@ body {
 
 
 .headtitle {
-    display: block;
-    text-align: center;
+/*    display: block;*/
+/*    text-align: center;*/
     font-family: 'Ruda';
     background-color: #eee;
     opacity: 0.9;
-    z-index: -1;
+/*    z-index: -10;*/
 }
 
 
@@ -44,7 +44,7 @@ body {
     font-size: 2.2em;
     font-weight: bold;
     text-align: center;
-    justify-content: center;
+/*    justify-content: center;*/
 }
 
 
@@ -442,10 +442,12 @@ li:hover {
 }
 
 .switchlabel{
-      position: relative;
+    position: relative;
     float: right;
     margin:0;
     padding:0;
+    opacity: 0;
+    z-index: 10;
 }
 
 #ugh {
@@ -490,11 +492,11 @@ li:hover {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #3e8e41;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #3e8e41;
 }
 
 input:checked + .slider:before {
