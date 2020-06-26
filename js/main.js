@@ -46,7 +46,8 @@
         lowestStateName = "NULL",
         lowestStateID = "NULL",
         answerText = "NULL",
-        answerState = "NULL";
+        answerState = "NULL",
+        qCat = "NULL";
     
     var playerResults, gameStatus, scorAi, scorCi, scorSi;
     var radius = 10;
@@ -56,7 +57,7 @@
     var answerData;
     var colorClasses;
     var runIntro = true;
-    var runTutorial = true;    
+    var runTutorial = false;    
     var animate = true;
     
     var comma = d3.format(",");
@@ -495,7 +496,10 @@
         gameStatus = "Running"
         
         setEventListeners(false, false, false);
-        d3.select(".selector").style("pointer-events", "none")
+        d3.select(".selector")
+            .style("pointer-events", "none")
+            .style("visibility", "hidden")
+            .style("opacity", 0)
 
         d3.select("#scorA").html(++scorAi)
         
@@ -556,6 +560,7 @@
                 questionID = questionData[i]["q_id"]
                 answerState = questionData[i]["answer_state"]
                 answerText = questionData[i]["answer_text"]
+                qCat = questionData[i]["category"]
 
             }
         };
@@ -579,7 +584,45 @@
             } 
         };
         
-        var colorClasses = ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'];
+        var colorClasses = ['#f7fcfd',                           
+                            '#e0ecf4',
+                            '#bfd3e6',
+                            '#9ebcda',
+                            '#8c96c6',
+                            '#8c6bb1',
+                            '#88419d',
+                            '#6e016b',
+                            '#e5f5f9',
+                            '#ccece6',
+                            '#99d8c9',
+                            '#66c2a4',
+                            '#41ae76',
+                            '#238b45',
+                            '#005824',
+                            '#fff7ec',
+                            '#fee8c8',
+                            '#fdd49e',
+                            '#fdbb84',
+                            '#fc8d59',
+                            '#ef6548',
+                            '#d7301f',
+                            '#990000',
+                            '#fcfbfd',
+                            '#efedf5',
+                            '#dadaeb',
+                            '#bcbddc',
+                            '#9e9ac8',
+                            '#807dba',
+                            '#6a51a3',
+                            '#4a1486',
+                            '#f7f4f9',
+                            '#e7e1ef',
+                            '#d4b9da',
+                            '#c994c7',
+                            '#df65b0',
+                            '#e7298a',
+                            '#ce1256',
+                            '#91003f'];
      
         function animateStates(callback) {
             setTimeout(function(){
@@ -630,9 +673,9 @@
             .transition()
             .delay(td*2)
             .duration(td)
-            .style("fill", "green")
+//            .style("fill", "green")
             .style("stroke", "gold")
-            .style("stroke-width", "3")
+            .style("stroke-width", "5")
         if(selectedStateID == correctStateID){
             d3.select("#star")
                 .transition()
@@ -701,7 +744,14 @@
     
         gameStatus = "Finished"
 
-        d3.select(".selector").style("pointer-events", "auto")
+        d3.select(".selector").style("pointer-events", "auto").text("Click HERE for the Next Question!")
+        
+        d3.select(".selector")
+            .transition()
+                .delay(500)
+                .duration(1000)
+                .style("visibility", "visible")
+                .style("opacity", 1)
         
         if (playerResults == 0) {
             d3.select("#scorC").html(++scorCi)
@@ -762,7 +812,23 @@
     
     //function to create color scale generator
     function quantileColorScale(data){
-        var colorClasses = ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'];
+        
+        switch(qCat) {
+            case "demo":
+                var colorClasses = ['#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'];  //purples//
+                break;
+            case "phys":
+                var colorClasses = ['#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594'];  //blues//
+                break;
+            case "nat":
+                var colorClasses = ['#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#99000d'];  //reds//
+                break;
+            case "econ":
+                var colorClasses = ['#e5f5e0','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#005a32'];  //greens//
+                break;
+            default:
+                var colorClasses = ['#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'];  //oranges//
+        }
 
         //create color scale generator
         var colorScale = d3.scaleQuantile()
@@ -772,7 +838,7 @@
         var domainArray = [];
         for (var i=0; i<data.length; i++){
             var val = parseFloat(data[i][expressed]);
-            if (typeof val == 'number' && !isNaN(val)){
+            if (typeof val == 'number' && val != 0){
                 domainArray.push(val);
             } 
         };
@@ -789,7 +855,7 @@
         var val = parseFloat(props[expressed]);
 
         //if attribute value exists, assign a color; otherwise assign gray
-        if (typeof val == 'number' && !isNaN(val)){
+        if (typeof val == 'number' && val != 0){
             return colorScale(val);
         } else {
             return "#CCC";
@@ -964,12 +1030,24 @@
        
         var showRaw = comma(Math.round((props[displayed] + Number.EPSILON) * 100) / 100)
         
+        if (props[displayed] == 0) {
+            var stateName = props.geo_name.toUpperCase() + " is not ranked on this question."
+        } else {
+            var stateName = props.geo_name.toUpperCase() + " is ranked " + ordRank + " on this question!"
+        } 
+        
         switch(questionID) {
+            case "q04":
+                var showNorm = comma(Math.round(((props[expressed] + Number.EPSILON) * 100) / 100))
+                break;
             case "q06":
-                var showNorm = comma(Math.round(((props.geo_pop/props.q06raw) + Number.EPSILON) * 100) / 100)
+                var showNorm = comma(Math.round((((props.geo_pop/props.q06raw) + Number.EPSILON) * 100) / 100))
+                break;
+            case "q14":
+                var showNorm = comma(Math.round(((props[expressed] + Number.EPSILON) * 100) / 100))
                 break;
             case "q16":
-                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                var showNorm = comma(Math.round(((props[expressed] + Number.EPSILON) * 100) / 100))
                 if (props[displayed] == 0) {
                     showRaw = "very few"
                     showNorm = "a neglible"
@@ -978,7 +1056,7 @@
                 }             
                 break;
             case "q17":
-                var showNorm = comma(Math.round(((props.geo_pop/props.q17raw) + Number.EPSILON) * 100) / 100)
+                var showNorm = comma(Math.round((((props.geo_pop/props.q17raw) + Number.EPSILON) * 100) / 100))
                 break;
             case "q20":
             case "q21":
@@ -990,14 +1068,74 @@
                 } else {
                     showRaw = showRaw + " acres of"
                 }             
-                break;                
+                break;    
+            case "q24":
+                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                if (props[displayed] == 0) {
+                    showRaw = "no known true caves"
+                    showNorm = "an unknown, but likely neglible,"
+                } else {
+                    showRaw = showRaw + " miles of caves"
+                }             
+                break;
+            case "q25":
+                var workNorm = props[displayed] * (props[expressed] - 1)
+                console.log(workNorm)
+                if (workNorm < 0) {
+                    var modSw = "less"
+                } else {
+                    var modSw = "more"
+                }
+                workNorm = (Math.round((Math.abs(workNorm) + Number.EPSILON) * 100) / 100)
+                console.log(workNorm)
+                if (workNorm < 1) {
+                    workNorm = (Math.round((((workNorm * 60) + Number.EPSILON) * 100) / 100))
+                    console.log(workNorm)
+                    var showNorm = workNorm + " seconds " + modSw
+                } else {
+                    var showNorm = workNorm + " minutes " + modSw
+                }              
+                break;
+            case "q27":
+                var showNorm = comma(Math.round(((1/props[expressed]) + Number.EPSILON) * 100) / 100)
+                break;  
+            case "q31":
+                var showNorm = comma(Math.round((((1/props[expressed]) + Number.EPSILON) * 100) / 100))
+                break;   
+            case "q35":
+                if (props[expressed] < 0) {
+                    var modSw = "less"
+                } else {
+                    var modSw = "more"
+                }
+                var workNorm = (Math.round((Math.abs(props[expressed]) + Number.EPSILON) * 100) / 100)
+                var showNorm = workNorm + " % " + modSw + " than "        
+                break;
+            case "q44":
+                if (props[expressed] < 0) {
+                    var modSw = "above "
+                } else {
+                    var modSw = "below "
+                }
+                var workNorm = (Math.round((Math.abs(props[expressed]) + Number.EPSILON) * 100) / 100)
+                var showNorm = workNorm + " degrees " + modSw 
+                showRaw = showRaw + " &deg" + "F"
+                break;
+            case "q45":
+                if (props[expressed] < 0) {
+                    var modSw = "below "
+                } else {
+                    var modSw = "above "
+                }
+                var workNorm = (Math.round((Math.abs(props[expressed]) + Number.EPSILON) * 100) / 100)
+                var showNorm = workNorm + " degrees " + modSw 
+                showRaw = showRaw + " &deg" + "F"
+                break;
             default:
                 var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
         }
 
         var idxLoad = questionData.findIndex(function (i) {return i.q_id === questionID})
-        
-        var stateName = props.geo_name.toUpperCase() + " is ranked " + ordRank + " on this question!"
         var infoAttribute1 = questionData[idxLoad].raw_prefix + " " + showRaw + " " + questionData[idxLoad].raw_suffix
         var infoAttribute2 = questionData[idxLoad].norm_prefix + " " + showNorm + " " + questionData[idxLoad].norm_suffix
         

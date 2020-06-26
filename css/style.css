@@ -70,7 +70,8 @@ body {
     text-decoration: none;
     outline: none;
     color: #fff;
-    background-color: #4CAF50;
+/*    background-color: #4CAF50;   */
+    background-color: #f16913;
     border: none;
     border-radius: 15px;
     box-shadow: 0 9px #666;
@@ -81,12 +82,13 @@ body {
 
 
 .selector:hover {
-    background-color: #3e8e41
+/*    background-color: #3e8e41   */
+    background-color: #d94801;
 }
 
 
 .selector:active {
-    background-color: #3e8e41;
+    background-color: #d94801;
     box-shadow: 0 5px #333;
     transform: translateY(4px);
 }
@@ -325,7 +327,8 @@ li:hover {
     visibility: hidden;  
     opacity: 0;
     overflow-y: scroll;
-    top: 0;   
+    top: 0;  
+    z-index: 10;
 }
 
 
@@ -447,7 +450,7 @@ li:hover {
     margin:0;
     padding:0;
     opacity: 0;
-    z-index: 10;
+    z-index: 2;
 }
 
 #ugh {
