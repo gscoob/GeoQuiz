@@ -57,7 +57,7 @@
     var answerData;
     var colorClasses;
     var runIntro = true;
-    var runTutorial = false;    
+//    var runTutorial = false;    
     var animate = true;
     
     var comma = d3.format(",");
@@ -401,11 +401,11 @@
                     .ease(d3.easeCircleOut)
                     .style("opacity", 1)
                     .style("visibility", "visible")
-                d3.select(".switchlabel")
-                    .transition()
-                    .duration(1500)
-                    .ease(d3.easeCircleOut)
-                    .style("opacity", 1)                
+//                d3.select(".switchlabel")
+//                    .transition()
+//                    .duration(1500)
+//                    .ease(d3.easeCircleOut)
+//                    .style("opacity", 1)                
             }, 2000);
         })
         
@@ -429,8 +429,39 @@
             .style("stroke", "#000")
             .style("stroke-width", "0.25px")
 
-        if (runIntro) {animateIntro()}
-        
+        if(runIntro && animate){
+            animateIntro()
+        } else {
+            if(runIntro){
+                d3.select(".map").style("pointer-events", "auto")
+                d3.select(".selector")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)
+                    .style("visibility", "visible")
+                d3.select(".rule")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)
+                    .style("visibility", "visible")
+                d3.select(".score")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)
+                    .style("visibility", "visible")
+                d3.select(".map")
+                    .transition()
+                    .duration(1500)
+                    .ease(d3.easeCircleOut)
+                    .style("opacity", 1)
+                    .style("visibility", "visible")
+            }
+            runIntro = false;
+        }
+ 
         gameStatus = "Playing"     
     };
     
@@ -584,45 +615,45 @@
             } 
         };
         
-        var colorClasses = ['#f7fcfd',                           
-                            '#e0ecf4',
-                            '#bfd3e6',
-                            '#9ebcda',
-                            '#8c96c6',
-                            '#8c6bb1',
-                            '#88419d',
-                            '#6e016b',
-                            '#e5f5f9',
-                            '#ccece6',
-                            '#99d8c9',
-                            '#66c2a4',
-                            '#41ae76',
-                            '#238b45',
-                            '#005824',
-                            '#fff7ec',
-                            '#fee8c8',
-                            '#fdd49e',
-                            '#fdbb84',
-                            '#fc8d59',
-                            '#ef6548',
-                            '#d7301f',
-                            '#990000',
-                            '#fcfbfd',
-                            '#efedf5',
-                            '#dadaeb',
-                            '#bcbddc',
-                            '#9e9ac8',
-                            '#807dba',
-                            '#6a51a3',
-                            '#4a1486',
-                            '#f7f4f9',
-                            '#e7e1ef',
-                            '#d4b9da',
-                            '#c994c7',
-                            '#df65b0',
-                            '#e7298a',
-                            '#ce1256',
-                            '#91003f'];
+//        var colorClasses = ['#f7fcfd',                           
+//                            '#e0ecf4',
+//                            '#bfd3e6',
+//                            '#9ebcda',
+//                            '#8c96c6',
+//                            '#8c6bb1',
+//                            '#88419d',
+//                            '#6e016b',
+//                            '#e5f5f9',
+//                            '#ccece6',
+//                            '#99d8c9',
+//                            '#66c2a4',
+//                            '#41ae76',
+//                            '#238b45',
+//                            '#005824',
+//                            '#fff7ec',
+//                            '#fee8c8',
+//                            '#fdd49e',
+//                            '#fdbb84',
+//                            '#fc8d59',
+//                            '#ef6548',
+//                            '#d7301f',
+//                            '#990000',
+//                            '#fcfbfd',
+//                            '#efedf5',
+//                            '#dadaeb',
+//                            '#bcbddc',
+//                            '#9e9ac8',
+//                            '#807dba',
+//                            '#6a51a3',
+//                            '#4a1486',
+//                            '#f7f4f9',
+//                            '#e7e1ef',
+//                            '#d4b9da',
+//                            '#c994c7',
+//                            '#df65b0',
+//                            '#e7298a',
+//                            '#ce1256',
+//                            '#91003f'];
      
         function animateStates(callback) {
             setTimeout(function(){
@@ -711,7 +742,7 @@
             .attr("class", "resultsbox")
             .style("background-color", reactColor)
             .on("click", function(){
-                    if(runTutorial){d3.select(".selector").html('Which state ' + questionText + '? &emsp; <span id="nextQ">(Click for next question)</span>')}
+//                  if(runTutorial){d3.select(".selector").html('Which state ' + questionText + '? &emsp; <span id="nextQ">(Click for next question)</span>')}
                     setEventListeners(true,false,true)    
                     this.remove();
                 })
@@ -727,13 +758,13 @@
             .attr("class", "resultsgoo")
             .html(infoAttribute2);
         
-        if(runTutorial){
-            d3.select(".resultsbox")
-                .append("div")
-                .attr("class", "instruct")
-                .style("left", window.innerWidth - 250+"px")
-                .text("Click Banner to Keep Playing");
-        }
+//        if(runTutorial){
+//            d3.select(".resultsbox")
+//                .append("div")
+//                .attr("class", "instruct")
+//                .style("left", window.innerWidth - 250+"px")
+//                .text("Click Banner to Keep Playing");
+//        }
         
         d3.select(".resultsbox")
             .transition()
@@ -762,7 +793,7 @@
         scorSi = ((scorCi / scorAi) * 100).toFixed(0)+"%"
         d3.select("#scorS").html(scorSi)
         
-        if(scorAi>4){runTutorial=false;}
+//        if(scorAi>4){runTutorial=false;}
     }
     
     
@@ -815,19 +846,19 @@
         
         switch(qCat) {
             case "demo":
-                var colorClasses = ['#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'];  //purples//
+                colorClasses = ['#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'];  //purples//
                 break;
             case "phys":
-                var colorClasses = ['#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594'];  //blues//
+                colorClasses = ['#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#084594'];  //blues//
                 break;
             case "nat":
-                var colorClasses = ['#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#99000d'];  //reds//
+                colorClasses = ['#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#99000d'];  //reds//
                 break;
             case "econ":
-                var colorClasses = ['#e5f5e0','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#005a32'];  //greens//
+                colorClasses = ['#e5f5e0','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#005a32'];  //greens//
                 break;
             default:
-                var colorClasses = ['#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'];  //oranges//
+                colorClasses = ['#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'];  //oranges//
         }
 
         //create color scale generator
@@ -870,8 +901,32 @@
                 var selected = d3.selectAll("." + props.geo_id)
                     .style("stroke", "blue")
                     .style("stroke-width", "3");
+                
+                if(animate){
+                    for(var i = 0; i < centroids.length; i++) {
+                       if(centroids[i][0] == props.geo_id) {
+                           var xy = centroids[i][1].slice();
+                           if (props.geo_acres/640 < 30000) {
+                               var factor = -0.5
+                               var scale = 1.5
+                           } else {
+                               var factor = -0.25
+                               var scale = 1.25
+                           }  
+                       }
+                    }
+
+                    var tx = factor * xy[0]
+                    var ty = factor * xy[1]
+
+                    d3.select(".states."+props.geo_id)
+                        .transition()
+                        .duration(300)
+                        .attr("transform", "translate("+tx+","+ty+")scale("+scale+")rotate(0)")                    
+                }
                 setInfoSelect(props);
                 break;
+                
             case "Finished":
                 setInfoResult(props);
                 break;
@@ -884,8 +939,14 @@
         
         d3.select(".infolabel")
             .remove();
-        
-        if (gameStatus !== "Finished") { 
+
+        if (gameStatus !== "Finished") {
+            if(animate){
+                d3.select(".states."+props.geo_id)     
+                    .transition()
+                    .duration(300)
+                    .attr("transform", "translate(0,0)scale(1)rotate(0)");                
+            }
             var selected = d3.selectAll("." + props.geo_id)
                 .style("stroke", function(){
                     return getStyle(this, "stroke")
@@ -987,11 +1048,11 @@
     //function to create dynamic label
     function setInfoSelect(props){
         
-        if(runTutorial){
-            var stateName = "Click to Select " + props.geo_name.toUpperCase() + " as the Answer"            
-        }else{
+//        if(runTutorial){
+//            var stateName = "Click to Select " + props.geo_name.toUpperCase() + " as the Answer"            
+//        }else{
             var stateName = "Is it " + props.geo_name.toUpperCase() + " ?"            
-        }
+//        }
 
         var infoAttribute1 = "Population: " + comma(props.geo_pop) 
         var infoAttribute2 = "Land Area: " + comma(Math.floor(props.geo_acres/640)) + " sq miles"
@@ -1043,6 +1104,15 @@
             case "q06":
                 var showNorm = comma(Math.round((((props.geo_pop/props.q06raw) + Number.EPSILON) * 100) / 100))
                 break;
+            case "q13":
+                var workRaw = props[displayed]/124
+                if (workRaw < 1) {
+                    showRaw = comma(Math.round((workRaw*1000 + Number.EPSILON) * 100) / 100) + " thousand "
+                } else {
+                    showRaw = comma(Math.round((workRaw + Number.EPSILON) * 100) / 100) + " million "
+                }
+                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                break;
             case "q14":
                 var showNorm = comma(Math.round(((props[expressed] + Number.EPSILON) * 100) / 100))
                 break;
@@ -1080,17 +1150,14 @@
                 break;
             case "q25":
                 var workNorm = props[displayed] * (props[expressed] - 1)
-                console.log(workNorm)
                 if (workNorm < 0) {
                     var modSw = "less"
                 } else {
                     var modSw = "more"
                 }
                 workNorm = (Math.round((Math.abs(workNorm) + Number.EPSILON) * 100) / 100)
-                console.log(workNorm)
                 if (workNorm < 1) {
                     workNorm = (Math.round((((workNorm * 60) + Number.EPSILON) * 100) / 100))
-                    console.log(workNorm)
                     var showNorm = workNorm + " seconds " + modSw
                 } else {
                     var showNorm = workNorm + " minutes " + modSw
@@ -1183,6 +1250,9 @@
         if(m){
             d3.selectAll(".states")
                 .on("mouseenter", function(d){
+                    if (gameStatus == "Playing") {
+                        this.parentElement.appendChild(this);                        
+                    }
                     highlight(d.properties);
                 })
                 .on("mouseleave", function(d){
@@ -1269,13 +1339,11 @@
             .transition()
             .delay(310)
             .duration(300)
-            .attr("transform", trans+"scale(1)rotate(-120)");
-//            .attr("transform", "translate("+xy[0]+","+xy[1]+")scale(1)rotate(-120)");        
+            .attr("transform", trans+"scale(1)rotate(-120)");        
     }
 
     
 
-    
     var shuffle = function (array) {
 
         var currentIndex = array.length;
