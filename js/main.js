@@ -1,5 +1,6 @@
 // JavaScript by Greg Farnsworth, 2020
 // Final Commit 5/5/2020
+// Latest Release 2020.08.23
 //
 
 (function(){
@@ -576,9 +577,10 @@
             var colorScale = quantileColorScale(answerData)
             colorStates(colorScale, 100)
             showResults(props)
+            setEventListeners(true,false,false)
         }
         
-        setEventListeners(true,false,false)
+
     };
     
     
@@ -793,6 +795,7 @@
         scorSi = ((scorCi / scorAi) * 100).toFixed(0)+"%"
         d3.select("#scorS").html(scorSi)
         
+        setEventListeners(true,false,false)
 //        if(scorAi>4){runTutorial=false;}
     }
     
@@ -1168,7 +1171,8 @@
                 break;  
             case "q31":
                 var showNorm = comma(Math.round((((1/props[expressed]) + Number.EPSILON) * 100) / 100))
-                break;   
+                break;  
+            case "q34":
             case "q35":
                 if (props[expressed] < 0) {
                     var modSw = "less"
@@ -1177,6 +1181,13 @@
                 }
                 var workNorm = (Math.round((Math.abs(props[expressed]) + Number.EPSILON) * 100) / 100)
                 var showNorm = workNorm + " % " + modSw + " than "        
+                break;
+            case "q38":
+                var showRaw = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                var showNorm = props[displayed]
+                break;
+            case "q40":
+                var showNorm = comma(Math.round((((props.geo_pop/props.q40raw) + Number.EPSILON) * 100) / 100))
                 break;
             case "q44":
                 if (props[expressed] < 0) {
