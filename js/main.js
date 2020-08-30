@@ -119,12 +119,14 @@
 
             questionData = csvQs;
             answerData = csvAs;
-
+console.log(csvQs);
+            console.log(questionData);
+            
             for (var i=0; i<questionData.length; i++){
                 answerArray.push(questionData[i].q_id+"raw")
                 answerArray.push(questionData[i].q_id+"norm")
             }
-
+console.log(answerArray);
             createButtons(questionData);
             
             //place graticule on the map
@@ -196,8 +198,9 @@
         var scor2 = '<span id="sco">Answered</span>'
         var scor3 = '<span id="sco">Correct</span>'
         var scor4 = '<span id="sco">Score</span>'
-        
+
         var scorR = questionData.length - 1
+                console.log(scorR);
         var scorA = "0"
         var scorC = "?"
         var scorS = "?"
@@ -1208,6 +1211,33 @@
                 var workNorm = (Math.round((Math.abs(props[expressed]) + Number.EPSILON) * 100) / 100)
                 var showNorm = workNorm + " degrees " + modSw 
                 showRaw = showRaw + " &deg" + "F"
+                break;
+            case "q51":
+                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                if (props[displayed] == 0) {
+                    showRaw = "is no"
+                    showNorm = "- of course - 0"
+                } else {
+                    showRaw = "are " + showRaw + " miles of"
+                }             
+                break; 
+            case "q58":
+                var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
+                if (props[displayed] == 0) {
+                    showRaw = "is no"
+                    showNorm = "- of course - 0"
+                } else {
+                    showRaw = "are " + showRaw + " acres of"
+                }             
+                break; 
+            case "q60":
+                if (props[expressed] < 0) {
+                    var modSw = "less"
+                } else {
+                    var modSw = "more"
+                }
+                var workNorm = (Math.round((Math.abs(props[expressed]) + Number.EPSILON) * 100) / 100)
+                var showNorm = workNorm + " MPH " + modSw + " than "        
                 break;
             default:
                 var showNorm = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
