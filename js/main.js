@@ -1186,6 +1186,7 @@ console.log(answerArray);
                 var showNorm = workNorm + " % " + modSw + " than "        
                 break;
             case "q38":
+            case "q65":
                 var showRaw = comma(Math.round((props[expressed] + Number.EPSILON) * 100) / 100)
                 var showNorm = props[displayed]
                 break;
